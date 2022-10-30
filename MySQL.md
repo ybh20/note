@@ -70,5 +70,22 @@
    mysql [-h 127.0.0.1] [-P 3306] -u root -p
    ```
 
-3. 
+3. DDL-数据库操作
+
+   ```sql
+   # 查询
+   	# 查询所有数据库
+   	show databases;
+   	
+   	# 查询当前数据库
+   	select database();
+   	
+   # 创建
+   	# 创建数据库
+   	create database [if not exists] database_name [default charset 字符集] [collate 排序规则];
+   	
+   	# 创建表
+   ```
+
+   
 
