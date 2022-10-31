@@ -80,11 +80,35 @@
    	# 查询当前数据库
    	select database();
    	
-   # 创建
-   	# 创建数据库
-   	create database [if not exists] database_name [default charset 字符集] [collate 排序规则];
+   # 创建数据库
+   create database [if not exists] database_name [default charset 字符集] [collate 排序规则];
    	
-   	# 创建表
+   # 删除数据库
+   drop database [if exists] database_name
+   
+   # 使用数据库
+   use database_name;
+   ```
+   
+4. DDL-表操作
+
+   ```sql
+   # 创建表
+   create table table_name (
+   	字段1 type [comment 字段注释],
+   	字段2 type [comment 字段注释],
+   	字段3 type [comment 字段注释],
+   	...
+   ) [comment 表注释];
+   
+   # 查询当前数据库中所有表
+   show tables;
+   
+   # 查询表结构
+   desc table_name;
+   
+   # 查询指定表的建表语句
+   show create table table_name;
    ```
 
    
