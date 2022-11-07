@@ -101,6 +101,15 @@
    	...
    ) [comment 表注释];
    
+   # 修改表名
+   alter table 旧表名 rename to 新表名
+   
+   # 删除表
+   drop table [if exists] 表名;
+   
+   # 删除表，并重新创建该表
+   truncate table 表名;
+   
    # 查询当前数据库中所有表
    show tables;
    
@@ -109,7 +118,53 @@
    
    # 查询指定表的建表语句
    show create table table_name;
-   ```
-
    
+   # 添加字段
+   alter table 表名 add 字段名 类型 [comment 注释] [约束]
+   
+   # 修改字段数据类型
+   alter table 表名 modify 字段名 新数据类型;
+   
+   # 修改字段名和字段类型
+   alter table 表名 change 旧字段 新字段 类型 [comment 注释] [约束];
+   
+   # 删除字段
+   alter table 表名 drop 字段名;
+   ```
+   
+
+5、数据类型
+
+| 分类     | 类型          | 大小   | 有符号（signed）范围           | 无符号（unsigned）范围 |
+| -------- | ------------- | ------ | ------------------------------ | ---------------------- |
+| 数值类型 | tinyint       | 1 byte | -128 ~ 127                     | 0 ~ 255                |
+|          | smallint      | 2 byte | -32768 ~ 32767                 | 0 ~ 65535              |
+|          | mediumint     | 3 byte |                                |                        |
+|          | int / integer | 4 byte |                                |                        |
+|          | bigint        | 8 byte |                                |                        |
+|          | float         | 4 byte |                                |                        |
+|          | double        | 8 byte |                                |                        |
+|          | decimal       |        | 依赖于M（精度）和D（标度）的值 |                        |
+
+| 分类       | 类型       | 大小     | 描述                        |
+| ---------- | ---------- | -------- | --------------------------- |
+| 字符串类型 | char       | 0, 255   | 定长字符串                  |
+|            | varchar    | 0, 65535 | 变长                        |
+|            | tinyblob   | 0, 255   | 不超过255个字符的二进制数据 |
+|            | tinytext   | 0, 255   | 短文本字符串                |
+|            | blob       | 0, 65535 | 二进制长文本                |
+|            | text       | 0, 65535 | 长文本数据                  |
+|            | mediumblob |          | 二进制中等长度              |
+|            | mediumtext |          | 中等长文本数据              |
+|            | longblob   |          | 二进制极大文本数据          |
+|            | longtext   |          | 极大文本数据                |
+
+| 分类     | 类型     | 范围                     | 格式                | 描述         |
+| -------- | -------- | ------------------------ | ------------------- | ------------ |
+| 日期类型 | date     | 1000-01-01 到 9999-12-31 | YYYY-MM-DD          | 年月日       |
+|          | time     |                          | HH:MM:SS            | 时分秒       |
+|          | year     |                          | YYYY                | 年           |
+|          | datatime |                          | YYYY-MM-DD HH:MM:SS | 年月日时分秒 |
+
+
 
