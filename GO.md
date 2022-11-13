@@ -122,3 +122,10 @@ if 条件表达式1 {
 }
 ```
 
+```go
+// switch 分支结构
+/*
+	switch穿透-fallthrough，如果在case语句后增加fallthrough，则会继续执行下一个case，只会穿透一层
+*/
+```
+
