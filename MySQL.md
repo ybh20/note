@@ -339,5 +339,73 @@
     # 如果查询的是第一页数据，开始索引可以省略，直接简写为 limit 10。
     ```
 
-    
 
+8、DCL-用户管理
+
+- 查询用户
+
+  ```sql
+  # 切换到mysql数据库
+  use mysql;
+  select * from user;
+  ```
+
+- 创建用户
+
+  ```sql
+  # %表示任意主机
+  create user "用户名"@"主机地址" identified by "密码";
+  ```
+
+- 修改用户密码
+
+  ```sql
+  alter user "用户名"@"主机地址" identified with mysql_native_password by "新密码";
+  ```
+
+- 删除用户
+
+  ```sql
+  drop user "用户名"@"主机地址";
+  ```
+
+9、DCL-权限控制
+
+- 常用的权限
+
+  | 权限                | 说明           |
+  | ------------------- | -------------- |
+  | all, all privileges | 所有权限       |
+  | select              | 查询数据       |
+  | insert              | 插入数据       |
+  | update              | 修改数据       |
+  | delete              | 删除数据       |
+  | alter               | 修改表         |
+  | drop                | 删除库/表/视图 |
+  | create              | 创建库/表      |
+
+- 查询权限
+
+  ```sql
+  show grants for "用户名"@"主机地址";
+  ```
+
+- 授予权限
+
+  ```sql
+  grant 权限列表 on 数据库名.表名 to "用户名"@"主机地址";
+  ```
+
+- 撤销权限
+
+  ```sql
+  revoke 权限列表 on 数据库名.表名 from "用户名"@"主机地址";
+  ```
+
+  ```sql
+  # 注意
+  	# 多个权限之间，使用逗号分隔
+  	# 数据库名和表名可以使用 * 进行匹配，代表所有
+  ```
+
+  
