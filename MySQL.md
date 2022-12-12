@@ -82,7 +82,7 @@
   create database [if not exists] database_name [default charset 字符集] [collate 排序规则];
   	
   # 删除数据库
-  drop database [if exists] database_name
+  drop database [if exists] database_name;
   
   # 使用数据库
   use database_name;
@@ -239,7 +239,7 @@
   # 设置别名
   select 字段1 [as 别名1], 字段2 [as 别名2] …… from 表名;
   
-  # 取出重复记录
+  # 去除重复记录
   select distinct 字段列表 from 表名;
   ```
 
@@ -466,4 +466,41 @@
   | case [expr] when [value1] then [res1] …… else [default] end | 如果expr的值等于value1，返回res1，……否则返回default默认值 |
 
   
+
+### 四、约束
+
+#### 	1、概述
+
+​		概念：约束是作用于表中字段上的规则，用于限制存储在表中的数据
+
+​		目的：保证数据库中数据的正确，有效性和完整性
+
+|               约束               |                        描述                        |     关键字     |
+| :------------------------------: | :------------------------------------------------: | :------------: |
+|               非空               |               限制字段的数据不能为空               |    not null    |
+|               唯一               |      保证该字段的所有数据都是唯一的，不重复的      |     unique     |
+|               主键               |      主键是一行数据的唯一标识，要求唯一且非空      |  primary key   |
+|               默认               |  保存数据时，如果未指定该字段的值，可以采用默认值  |    default     |
+| 检查约束（8.0.16版本之后才支持） |               保证字段满足某一个要求               |     check      |
+|               外键               | 用来建立两张表之间的连接，保证数据的一致性和完整性 |  foreign key   |
+|               自增               |              让某个字段按顺序进行增涨              | auto_increment |
+
+添加外键约束语法
+
+```sql
+create table 表名(
+	字段名 数据类型,
+    ……
+    [constraint] [外键名称] foreign key(外键字段名) references 主表(主表列名)
+);
+
+
+alter table 表名 add constraint 外键名称 foreign key(外键字段名) references 主表(主表列名);
+```
+
+删除外键约束语法
+
+```sql
+alter table 表名 drop foreign key 外键名称;
+```
 

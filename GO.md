@@ -147,5 +147,205 @@ if 条件表达式1 {
   */
   ```
 
-  
+#### 	1.5.1 函数的调用机制
 
+- 在调用一个函数时，会给该函数分配一个新的空间，编译器会通过自身的处理让这个新的空间 和其它的栈的空间区分开来
+
+- 在每个函数对应的栈中，数据空间是独立的，不会混淆
+
+- 当一个函数调用完毕(执行完毕)后，程序会销毁这个函数对应的栈空间。
+
+#### 1.5.2 init函数
+
+- 每一个源文件中都可以包含一个init函数，该函数会在main函数执行之前被调用。
+- 通常可以在init函数中完成一些初始化工作
+
+#### 1.5.3匿名函数
+
+1. 匿名函数的调用方式
+   1. 在定义匿名函数的时候直接调用
+   2. 将匿名函数赋值给一个变量
+
+#### 1.5.4 函数中的defer
+
+- 被defer标记的语句会被依次压入栈中，待函数执行完之后按照后进先出的方式依次执行
+
+#### 1.5.5 值类型和引用类型
+
+1. **值类型：**基本数据类型 int…… float…、bool、string、数据、结构体struct
+2. **引用类型：**指针、切片slice、map、管道chan、interface等都是引用类型
+
+### 1.6 内置函数
+
+#### 	1.6.1 字符串函数
+
+1. len()：统计字符串的长度，按字节计算，字母和数字占一个字节，汉字占三个字节。
+
+   ```go
+   str1 := "hello"
+   fmt.Println("str1 len=", len(str1))
+   ```
+
+2. arr := []rune(str)：字符串遍历
+
+   ```go
+   str2 := []rune("hello，世界")
+   for i := 0; i < len(str2); i++ {
+   	fmt.Printf("%c", str2[i])
+   }
+   ```
+
+3. n, err := strconv.Atoi("12345")：字符串转整数，n 是转换成功后的值，err 是转换失败的提示
+
+   ```go
+   n, err := strconv.Atoi("12345")
+   if err != nil {
+       fmt.Println(err)
+   } else {
+       fmt.Println(n)
+   }
+   ```
+
+4. num := strconv.Itoa(12345)：整数转字符串
+
+   ```go
+   num := strconv.Itoa(12345)
+   fmt.Printf("%v, %T", num, num)
+   ```
+
+5. bytes := []byte("hello go")：字符串转byte
+
+   ```go
+   bytes := []byte("hello go")
+   fmt.Println(bytes)
+   ```
+
+6. str3 := string([]byte{97, 98, 99})：byte转字符串
+
+   ```go
+   str3 := string([]byte{97, 98, 99})
+   fmt.Println(str3)
+   ```
+
+7. str4 := strconv.FormatInt(123, 2)：十进制转对应的2, 8, 16进制，返回一个字符串值
+
+   ```go
+   str4 := strconv.FormatInt(64, 8)
+   fmt.Println(str4)
+   ```
+
+8. strings.Contains("hello", "e")：查找字符串中是否包含指定字串，返回一个布尔值
+
+   ```go
+   flag := strings.Contains("hello", "e")
+   fmt.Println(flag)
+   ```
+
+9. strings.Count(str1, str2)：统计字串str2，在str1中出现的次数
+
+   ```go
+   str := strings.Count("hello", "e")
+   fmt.Println(str)
+   ```
+
+10. strings.EqualFold(str1, str2) 和 == ：字符串比较，前者不区分大小写。
+
+   ```go
+   str6 := strings.EqualFold("hello", "HELLO")
+   str7 := "hello" == "HELLO"
+   fmt.Println(str6, str7)
+   ```
+
+11. strings.Index(str1, str2)：查找str2在str1中第一次出现的位置
+
+    ```go
+    index := strings.Index("hello", "e")
+    fmt.Println("index =", index)
+    ```
+
+12. strings.LastIndex(str1, str2)：查找str2在str1中最后一次出现的位置
+
+    ```go
+    lastIndex := strings.LastIndex("helloe", "e")
+    fmt.Println("lastIndex =", lastIndex)
+    ```
+
+13. strings.Replace(str, str1, str2, n)：字符串替换，用str2替换在str中存在的str1，n可以指定替换的个数，如果n=-1 表示全部替换。
+
+    ```go
+    str8 := strings.Replace("鸡你太美，鸡你实在是太没", "没", "美", 1)
+    fmt.Println("str8 =", str8)
+    ```
+
+14. stings.Split(str, char)：字符串分割，用char将str分隔成一个数组
+
+    ```go
+    arr := strings.Split("hello，world，jack", "，")
+    fmt.Println("arr =", arr)
+    ```
+
+15. strings.ToLower() 大写转小写 和 strings.ToUpper() 小写转大写
+
+    ```go
+    fmt.Println("ToLower =", strings.ToLower("GOLANG"))
+    fmt.Println("ToUpper =", strings.ToUpper("golang"))
+    ```
+
+16. strings.TrimSpace(str)：去掉str两边的空格
+
+    ```go
+    str9 := strings.TrimSpace(" hello world jack ")
+    fmt.Println(str9)
+    ```
+
+17. strings.Trim(str, chars)：去掉str两边的chars
+
+    ```go
+    str10 := strings.Trim("!hello world jack ", "! ")
+    fmt.Println(str10)
+    ```
+
+18. strings.TrimLeft(str, chars)：去掉str左边的chars
+
+19. strings.TrimRight(str, chars)：去掉str右边的chars
+
+20. strings.HasPrefix(str1, str2)：判断str1是否以str2开头
+
+21. strings.HasSuffix(str1, str2)：判断str1是否以str2结尾
+
+#### 1.6.2 时间与日期函数
+
+​	使用时间与日期函数需要先导入 time 包
+
+1. time.Now()：获取当前日期
+   1. time.Now().Year()：获取年份
+   2. int(time.Now().Month())：获取月份，获取到的是英文的月份，可以用 int() 强转成数字的方式
+   3. time.Now().Day()：获取当前月的第几天
+   4. time.Now().hour()：获取小时
+   5. time.Now().Minute()：获取分钟
+   6. time.Now().Second()：获取秒数
+   
+2. time.Now().Format("2006-01-02 15:04:05")：日期格式化
+
+3. time.Sleep(time.时间常量)：休眠
+
+   ```go
+   // 时间常量
+   const (
+   	Nanosecond  Duration = 1						// 纳秒
+   	Microsecond          = 1000 * Nanosecond		 // 微秒
+   	Millisecond          = 1000 * Microsecond		 // 毫秒
+   	Second               = 1000 * Millisecond		 // 秒
+   	Minute               = 60 * Second				// 分钟
+   	Hour                 = 60 * Minute				// 小时
+   )
+   ```
+
+4. time.Now().Unix() 和 time.Now().UnixNano()：获取1970年1月1日到现在的时间戳，前者获取的是秒，后者是纳秒
+
+   ```go
+   time.Now().Unix()
+   time.Now().UnixNano()
+   ```
+
+#### 1.6.3 内置函数
