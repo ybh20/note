@@ -349,3 +349,221 @@ if 条件表达式1 {
    ```
 
 #### 1.6.3 内置函数
+
+1. len()：统计长度
+2. new(数据类型)：用来分配内存，一般是值类型，返回的是指针
+3. make：用来分配内存，一般是引用类型，返回的是指针
+
+### 1.7  错误处理
+
+1. go语言并不支持传统的 try……catch……finally 这种处理
+
+2. go中引入的处理方式是：defer，panic，recover
+
+3. 使用方式：go中抛出一个panic异常，然后在defer中通过recover捕获，然后正常处理
+
+   ```go
+   defer func() {
+   	err := recover()
+   	if err != nil {
+   		fmt.Println(err)
+   	}
+   }()
+   num1 := 10
+   num2 := 0
+   result := num1 / num2
+   fmt.Println(result)
+   ```
+
+4. **自定义异常处理**
+
+   - 使用 errors.New() 和 panic 内置函数
+
+   - errors.New("错误说明") 会返回一个error类型的值，表示一个错误
+
+   - panic内置函数，接收一个interface()类型的值作为参数。可以接受error类型的变量，输出错误信息，并推出程序。
+
+     ```go
+     func equalName(name string) (err error) {
+     	if name != "嘿嘿嘿" {
+     		return errors.New("名字不匹配……")
+     	}
+     	return nil
+     }
+     
+     func main() {
+         err := equalName("哈哈哈")
+     	if err != nil {
+     		fmt.Println(err)
+     	}
+     }
+     ```
+
+
+### 1.8 数组与切片
+
+#### 1.8.1	数组介绍
+
+​	数组可以存放多个同一数据类型的数据，在go中数组是值类型
+
+1. 使用方式
+
+   ```go
+   // 一
+   var arr [长度]数据类型 = [长度]数据类型 {1,2,3,4,5}
+   // 二
+   var arr = [长度]数据类型 {1,2,3,4,5}
+   // 三
+   var arr = [...]数据类型 {1,2,3,4,5}
+   // 四
+   var arr = [3]string{0:"tom", 1:"jack", 2:"marry"}
+   ```
+
+2. 数组的第一个元素的地址，就是数组的首地址
+
+3. 数组的遍历
+
+   ```go
+   // 1、for循环
+   var arr [3]int = [3]int {1,2,3}
+   
+   for i := 0; i < len(arr); i++ {
+       fmt.println(arr[i])
+   }
+   
+   // 2、for - range
+   for index, value := range arr {
+       fmt.println(index, value)
+   }
+   // 1、index 返回的是数组的下标
+   // 2、value 返回的是下标对应的值
+   // 3、如果不想使用下标，可以使用 _ 替换掉index切片
+   ```
+
+
+#### 1.8.2	切片
+
+- ```go
+  // 切片的定义
+  
+  // 1、定义一个切片，然后让切片去引用一个已经创建好的数组
+  var arr = [...]int {}
+  var sliceName = arr
+  
+  // 2、通过 make 来创建切片
+  var slice []int = make([]int, len, size)
+  
+  // 3、
+  var slice []int = []int {1,2,3}
+  ```
+
+- append(slice, v1, v2, ...) 将元素追加到slice切片的末尾。若它有足够的容量，其目标就会重新切片以容纳新的元素。否则，就会分配一个新的基本数组。append返回更新后的切片，因此必须存储追加后的结果。
+
+- copy(slice1, slice2) 将slice2切片的元素复制到slice1切片中。
+
+#### 1.8.3 二维数组
+
+- ```go
+  // 声明
+  var arr [几行][几列]int
+  
+  // 初始化
+  var arr [3][3]int = [3][3]int {{1,2,3}, {1,2,3}, {1,2,3}}
+  ```
+
+### 1.9 map
+
+- ```go
+  // map的定义方式
+  // 方式一
+  var map1 map[string]string
+  map1 = make(map[string]string, 10)
+  map1["name"] = "张三"
+  
+  // 方式二
+  map2 := make(map[string]string)
+  map2["name"] = "李四"
+  
+  // 方式三
+  map3 := map[string]string{
+      "name" : "王二",
+  }
+  
+  // 删除元素
+  delete(map3, name)
+  
+  // 查找元素
+  value, flag := map3["name"]
+  
+  // 遍历
+  for k, v := range map3 {
+      fmt.Println(k, v)
+  }
+  ```
+
+### 1.10 结构体
+
+- ```go
+  // 结构体的定义
+  type Student struct {
+  	Name string
+  	Age int
+  	Sex string
+  }
+  
+  // 创建结构体实例
+  // 方式一
+  var stu Student
+  stu.Name = "张三"
+  stu.Age = 19
+  stu.Sex = "男"
+  
+  // 方式二
+  var stu = Student{"李四", 20, "男"}
+  
+  // 方式三
+  var stu *Student = new(Student)
+  (*stu).Name = "王五"
+  (*stu).Age = 20
+  (*stu).Sex = "男"
+  // 我们发现这种通过指针的方式相对于前面两种方式比较麻烦，后来go给我们提供了简化的方式
+  stu.Name = "小花"
+  // 其实底层还是给我们转换成了 (*stu).Name = "小花"
+  
+  // 方式四
+  var stu *Student = &Student{}
+  stu.Name = "小红"
+  
+  // 结构体之间的相互转换
+  type Student struct {
+      Name string
+  }
+  
+  type Person struct {
+      Name string
+  }
+  
+  func main() {
+      var s Student = Student{"张三"}
+      var p Person = Person{"张三"}
+      p = Person(s)
+  } 
+  
+  // 方法的引入
+  type Cat struct {
+      Name string
+  }
+  
+  func (c Cat) show() {
+      fmt.Println(c)
+  }
+  
+  func main() {
+      // 方法的调用
+      var c Cat
+      c.show()
+  }
+  ```
+
+  
+
